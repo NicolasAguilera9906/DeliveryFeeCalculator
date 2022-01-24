@@ -1,11 +1,10 @@
 package com.wolt.deliveryfeecalculator.services;
 
+import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorException;
 import com.wolt.deliveryfeecalculator.model.Delivery;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public interface DeliveryServices {
 
-
-    public int getDeliveryPrice(Delivery delivery) throws Exception;
+    public int getDeliveryFee(Delivery delivery) throws DeliveryFeeCalculatorException;
 
 }

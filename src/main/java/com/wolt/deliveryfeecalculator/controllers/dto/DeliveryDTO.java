@@ -2,17 +2,27 @@ package com.wolt.deliveryfeecalculator.controllers.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
+
 public class DeliveryDTO {
 
-    private int cartValue;
-    private int deliveryDistance;
-    private int numberOfItems;
+
+    @NotNull
+    private Integer cartValue;
+
+    @NotNull
+    private Integer deliveryDistance;
+
+    @NotNull
+    private Integer numberOfItems;
+
+    @NotNull
     private String time;
 
     public DeliveryDTO() {
     }
 
-    public DeliveryDTO(int cartValue, int deliveryDistance, int numberOfItems, String time) {
+    public DeliveryDTO(Integer cartValue, Integer deliveryDistance, Integer numberOfItems, String time) {
         this.cartValue = cartValue;
         this.deliveryDistance = deliveryDistance;
         this.numberOfItems = numberOfItems;
@@ -20,7 +30,7 @@ public class DeliveryDTO {
     }
 
     @JsonProperty("cart_value")
-    public int getCartValue() {
+    public Integer getCartValue() {
         return cartValue;
     }
 
@@ -29,7 +39,7 @@ public class DeliveryDTO {
     }
 
     @JsonProperty("delivery_distance")
-    public int getDeliveryDistance() {
+    public Integer getDeliveryDistance() {
         return deliveryDistance;
     }
 
@@ -38,7 +48,7 @@ public class DeliveryDTO {
     }
 
     @JsonProperty("number_of_items")
-    public int getNumberOfItems() {
+    public Integer getNumberOfItems() {
         return numberOfItems;
     }
 

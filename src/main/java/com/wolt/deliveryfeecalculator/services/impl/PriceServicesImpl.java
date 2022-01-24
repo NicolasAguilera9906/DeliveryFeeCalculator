@@ -1,5 +1,6 @@
 package com.wolt.deliveryfeecalculator.services.impl;
 
+import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesException;
 import com.wolt.deliveryfeecalculator.services.CurrencyConverterServices;
 import com.wolt.deliveryfeecalculator.services.PriceServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,10 @@ public class PriceServicesImpl implements PriceServices {
     private CurrencyConverterServices currencyConverterServices;
 
     @Override
-    public double calculateSurchargeByCartPrice(double cartValue) {
+    public double calculateSurchargeByCartPrice(double cartValue) throws DeliveryFeeCalculatorServicesException {
+        if(cartValue < 0){
+            throw new DeliveryFeeCalculatorServicesException("The cart value cannot be less than 0");
+        }
         double surcharge = 0;
         if (cartValue < 10) {
             double subtrahend = 10;
@@ -25,17 +29,20 @@ public class PriceServicesImpl implements PriceServices {
 
 
     @Override
-    public double calculateSurchargeByNumberOfItems(int numberOfItems) {
+    public double calculateSurchargeByNumberOfItems(int numberOfItems) throws DeliveryFeeCalculatorServicesException {
+        if(numberOfItems<0){
+            throw new DeliveryFeeCalculatorServicesException("The number of items cannot be less than 0");
+        }
         double extraPaymentInEuros = currencyConverterServices.convertCentsToEuros(50);
         double surcharge = (numberOfItems >=5) ? (numberOfItems-4)*extraPaymentInEuros : 0 ;
         return surcharge;
     }
 
     @Override
-    public double calculateFeeByDistance(int distance) throws Exception {
+    public double calculateFeeByDistance(int distance) throws DeliveryFeeCalculatorServicesException {
         double fee = 0;
         if (distance < 0){
-            throw new Exception("Invalid distance");
+            throw new DeliveryFeeCalculatorServicesException("Distance cannot be less than 0");
         }
         else if(distance <= 1000){
             fee = 2;
