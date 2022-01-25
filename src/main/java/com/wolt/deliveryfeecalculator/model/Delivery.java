@@ -19,6 +19,13 @@ public class Delivery {
         this.time = deliveryDTO.getTime();
     }
 
+    public Delivery(int cartValue, int deliveryDistance, int numberOfItems, String time) {
+        this.cartValue = cartValue;
+        this.deliveryDistance = deliveryDistance;
+        this.numberOfItems = numberOfItems;
+        this.time = time;
+    }
+
     public int getCartValue() {
         return cartValue;
     }

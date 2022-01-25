@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "api/v1/prices")
+@RequestMapping(value = "deliveries/fees")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,RequestMethod.DELETE})
 public class DeliveryController {
 
     @Autowired
     private DeliveryServices deliveryServices;
 
-    @GetMapping("")
+    @PostMapping("/calculate")
     public ResponseEntity<Object> getDeliveryPrice (
             @Valid @RequestBody DeliveryDTO deliveryDTO) throws DeliveryFeeCalculatorException {
         Delivery delivery = new Delivery(deliveryDTO);
