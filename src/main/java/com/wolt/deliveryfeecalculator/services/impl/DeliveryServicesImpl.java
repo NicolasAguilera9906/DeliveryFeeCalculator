@@ -43,10 +43,8 @@ public class DeliveryServicesImpl implements DeliveryServices {
         String stringDeliveryTime = delivery.getTime();
         Date deliveryTime = convertStringToDate(stringDeliveryTime);
         fees += calculateSurchargeByCartPrice(currencyConverterServices.convertCentsToEuros(delivery.getCartValue()));
-        System.out.println(fees);
         fees += calculateFeeByDistance(delivery.getDeliveryDistance());
         fees += calculateSurchargeByNumberOfItems(delivery.getNumberOfItems());
-        System.out.println(fees);
         if (isADateOfTheWeek(6,deliveryTime) && isBetweenTwoHours("15:00:00","19:00:00", delivery.getTime())) {
             fees = fees * 1.1;
         }

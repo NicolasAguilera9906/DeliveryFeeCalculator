@@ -3,11 +3,15 @@ package com.wolt.deliveryfeecalculator.services.impl;
 import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesException;
 import com.wolt.deliveryfeecalculator.services.TimeServices;
 import org.springframework.stereotype.Service;
+import java.text.*;
 
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 @Service
 public class TimeServicesImpl implements TimeServices {
@@ -37,8 +41,21 @@ public class TimeServicesImpl implements TimeServices {
     public boolean isBetweenTwoHours(String hour1, String hour2, String date) throws DeliveryFeeCalculatorServicesException {
         Date date1 = parseStringHourToDate(hour1);
         Date date2 = parseStringHourToDate(hour2);
-        Date time = parseStringHourToDate(date);
-        return (time.after(date2) || time.before(date1)) ? false:true;
+        String stringDateOnlyWithTime = extractHourFromDate(date);
+        Date dateOnlyWithTime = parseStringHourToDate(stringDateOnlyWithTime);
+        return (dateOnlyWithTime.after(date2) || dateOnlyWithTime.before(date1)) ? false:true;
+    }
+
+    private String extractHourFromDate(String date) throws DeliveryFeeCalculatorServicesException {
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String hourFromDate = null;
+        try {
+            hourFromDate = dateFormat.format(convertStringToDate(date));
+        } catch (DeliveryFeeCalculatorServicesException e) {
+            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format");
+        }
+        return hourFromDate;
+
     }
 
     private Date parseStringHourToDate(String hour) throws DeliveryFeeCalculatorServicesException {

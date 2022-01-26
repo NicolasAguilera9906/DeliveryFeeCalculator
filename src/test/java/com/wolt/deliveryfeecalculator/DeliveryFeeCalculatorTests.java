@@ -1,7 +1,5 @@
 package com.wolt.deliveryfeecalculator;
 
-
-import com.google.gson.Gson;
 import com.wolt.deliveryfeecalculator.controllers.dto.DeliveryDTO;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -12,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-
-import java.text.SimpleDateFormat;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,6 +74,142 @@ class DeliveryFeeCalculatorTests{
 		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
 		double delta = 0.000001d;
 		double expectedFee = 700;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void surchargeShouldBeAddedIfCartValueIsLessThan10Euros () throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(900,500,1,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedCartSurcharge = 100;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedCartSurcharge + expectedDistanceFee;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void surchargeShouldNotBeAddedIfCartValueIsEqualTo10Euros () throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(1000,500,1,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedDistanceFee;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void surchargeShouldNotBeAddedIfCartValueIsGreaterThan10Euros () throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,1,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedDistanceFee;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void surchargeShouldBeAddedIfTheNumberOfItemsIsEqualTo5() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,5,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedNumberOfItemsSurcharge = (deliveryDTO.getNumberOfItems()-4)*50;
+		double expectedFee = expectedDistanceFee + expectedNumberOfItemsSurcharge;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void surchargeShouldBeAddedIfTheNumberOfItemsIsGreaterThan5() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,12,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedNumberOfItemsSurcharge = (deliveryDTO.getNumberOfItems()-4)*50;
+		double expectedFee = expectedDistanceFee + expectedNumberOfItemsSurcharge;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void feeShouldNotBeGreaterThan15() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,90,"2021-10-12T13:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isInternalServerError())
+				.andReturn();
+		String responseMessage = response.getResponse().getContentAsString();
+		String expectedErrorMessage = "The delivery fee can never be more than 15€, including possible surcharges";
+		Assert.assertEquals(expectedErrorMessage,responseMessage);
+	}
+
+	@Test
+	void feeShouldBeMultipliedByOnePointOneOnTheFridayRushAt15() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,3,"2022-01-28T15:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedDistanceFee * 1.1;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void feeShouldBeMultipliedByOnePointOneOnTheFridayRushAt19() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,3,"2022-03-04T19:00:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedDistanceFee * 1.1;
+		Assert.assertEquals(expectedFee, actualFee, delta);
+	}
+
+	@Test
+	void feeShouldBeMultipliedByOnePointOneOnTheFridayRushBetween13and19() throws Exception {
+		DeliveryDTO deliveryDTO = createDeliveryDTO(2000,500,3,"2022-05-13T16:55:00Z");
+		MvcResult response = mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryJSON(deliveryDTO)))
+				.andExpect(status().isOk())
+				.andReturn();
+		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		double delta = 0.000001d;
+		double expectedDistanceFee = 200;
+		double expectedFee = expectedDistanceFee * 1.1;
 		Assert.assertEquals(expectedFee, actualFee, delta);
 	}
 
