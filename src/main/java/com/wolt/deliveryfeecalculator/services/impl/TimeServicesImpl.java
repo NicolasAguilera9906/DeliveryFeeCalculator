@@ -2,6 +2,7 @@ package com.wolt.deliveryfeecalculator.services.impl;
 
 import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesException;
 import com.wolt.deliveryfeecalculator.services.TimeServices;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.text.*;
 
@@ -23,7 +24,7 @@ public class TimeServicesImpl implements TimeServices {
         try {
             date = simpleDateFormat.parse( stringDate );
         } catch (ParseException e) {
-            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format");
+            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format", HttpStatus.BAD_REQUEST);
         }
         return date;
     }
@@ -52,7 +53,7 @@ public class TimeServicesImpl implements TimeServices {
         try {
             hourFromDate = dateFormat.format(convertStringToDate(date));
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format");
+            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format",HttpStatus.BAD_REQUEST);
         }
         return hourFromDate;
 
@@ -62,7 +63,7 @@ public class TimeServicesImpl implements TimeServices {
         try {
             return new SimpleDateFormat("HH:mm:ss").parse(hour);
         } catch (ParseException e) {
-            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format");
+            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format",HttpStatus.BAD_REQUEST);
         }
     }
 }

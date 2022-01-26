@@ -49,8 +49,8 @@ public class DeliveryServicesImpl implements DeliveryServices {
             fees = fees * 1.1;
         }
         if(fees > 15){
-            DeliveryFeeCalculatorServicesException dFCServicesException =  new DeliveryFeeCalculatorServicesException("The delivery fee can never be more than 15€, including possible surcharges");
-            throw new DeliveryFeeCalculatorException(dFCServicesException.getMessage() , dFCServicesException , HttpStatus.INTERNAL_SERVER_ERROR);
+            DeliveryFeeCalculatorServicesException dFCServicesException =  new DeliveryFeeCalculatorServicesException("The delivery fee can never be more than 15€, including possible surcharges",HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DeliveryFeeCalculatorException(dFCServicesException.getMessage() , dFCServicesException , dFCServicesException.getStatus());
         }
         return currencyConverterServices.convertEurosToCents(fees);
     }
@@ -60,7 +60,7 @@ public class DeliveryServicesImpl implements DeliveryServices {
         try {
             surcharge = priceServices.calculateSurchargeByCartPrice(cartValue);
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
         }
         return surcharge;
     }
@@ -70,7 +70,7 @@ public class DeliveryServicesImpl implements DeliveryServices {
         try {
             fee = priceServices.calculateFeeByDistance(deliveryDistance);
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
         }
         return fee;
     }
@@ -80,7 +80,7 @@ public class DeliveryServicesImpl implements DeliveryServices {
         try {
             surcharge = priceServices.calculateSurchargeByNumberOfItems(numberOfItems);
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
         }
         return surcharge;
     }
@@ -89,7 +89,7 @@ public class DeliveryServicesImpl implements DeliveryServices {
         try {
             return timeServices.convertStringToDate(stringDeliveryTime);
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(),e, HttpStatus.BAD_REQUEST);
+            throw new DeliveryFeeCalculatorException(e.getMessage(),e, e.getStatus());
         }
     }
 
@@ -101,7 +101,7 @@ public class DeliveryServicesImpl implements DeliveryServices {
         try {
             return timeServices.isBetweenTwoHours(hour1,hour2,stringDate);
         } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(),e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DeliveryFeeCalculatorException(e.getMessage(),e, e.getStatus());
         }
     }
 
