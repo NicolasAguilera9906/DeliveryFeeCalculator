@@ -265,6 +265,23 @@ class DeliveryFeeCalculatorTests {
 		Assert.assertEquals(expectedErrorMessage, responseMessage);
 	}
 
+	@Test
+	void feeShouldNotBeCalculatedIfAnIntegerIsInAnIncorrectFormat() throws Exception {
+		mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(getDeliveryWrongJSON()))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+	}
+
+	private String getDeliveryWrongJSON() {
+		return "{\"cart_value\": " + "wrongValue" + ",\n" +
+				"    \"delivery_distance\": " + "wrongValue" + ",\n" +
+				"    \"number_of_items\": " + "wrongValue" + ",\n" +
+				"    \"time\": \"" + "2022-05-13T16:55:00Z" + "\"\n" +
+				"}";
+	}
+
 	private String getDeliveryJSON(DeliveryDTO deliveryDTO) {
 		return "{\"cart_value\": " + deliveryDTO.getCartValue() + ",\n" +
 				"    \"delivery_distance\": " + deliveryDTO.getDeliveryDistance() + ",\n" +
@@ -272,7 +289,6 @@ class DeliveryFeeCalculatorTests {
 				"    \"time\": \"" + deliveryDTO.getTime() + "\"\n" +
 				"}";
 	}
-
 
 	private DeliveryDTO createDeliveryDTO(int cartValue, int deliveryDistance, int numberOfItems, String time) {
 		DeliveryDTO delivery = new DeliveryDTO(cartValue, deliveryDistance, numberOfItems, time);
