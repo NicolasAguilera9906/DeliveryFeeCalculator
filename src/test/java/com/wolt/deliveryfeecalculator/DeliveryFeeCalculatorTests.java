@@ -11,6 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -270,15 +273,49 @@ class DeliveryFeeCalculatorTests {
 		mockMvc.perform(post("/deliveries/fees/calculate")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(getDeliveryWrongJSON()))
-				.andExpect(status().isBadRequest())
-				.andReturn();
+				.andExpect(status().isBadRequest());
 	}
 
+	@Test
+	void feeShouldNotBeCalculatedWhenAParameterIsNull() throws Exception {
+		String deliveryJSON = getDeliveryWrongJSONWithNullParameters();
+		mockMvc.perform(post("/deliveries/fees/calculate")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(deliveryJSON))
+				.andExpect(status().isBadRequest());
+	}
+	
+	private String getDeliveryWrongJSONWithNullParameters() {
+		ArrayList parameters = new ArrayList();
+		parameters.add(1);
+		parameters.add(1000);
+		parameters.add(2);
+		parameters.add("2022-05-13T16:55:00Z");
+		Random rand = new Random();
+		int n = rand.nextInt(4);
+		parameters.set(n,null);
+		return "{\"cart_value\": " + parameters.get(0) + ",\n" +
+				"    \"delivery_distance\": " + parameters.get(1) + ",\n" +
+				"    \"number_of_items\": " + parameters.get(2) + ",\n" +
+				"    \"time\": \"" + parameters.get(3) + "\"\n" +
+				"}";
+	}
+
+
+
 	private String getDeliveryWrongJSON() {
-		return "{\"cart_value\": " + "wrongValue" + ",\n" +
-				"    \"delivery_distance\": " + "wrongValue" + ",\n" +
-				"    \"number_of_items\": " + "wrongValue" + ",\n" +
-				"    \"time\": \"" + "2022-05-13T16:55:00Z" + "\"\n" +
+		ArrayList parameters = new ArrayList();
+		parameters.add(1);
+		parameters.add(1000);
+		parameters.add(2);
+		parameters.add("2022-05-13T16:55:00Z");
+		Random rand = new Random();
+		int n = rand.nextInt(4);
+		parameters.set(n,"wrong value");
+		return "{\"cart_value\": " + parameters.get(0) + ",\n" +
+				"    \"delivery_distance\": " + parameters.get(1) + ",\n" +
+				"    \"number_of_items\": " + parameters.get(2) + ",\n" +
+				"    \"time\": \"" + parameters.get(3) + "\"\n" +
 				"}";
 	}
 

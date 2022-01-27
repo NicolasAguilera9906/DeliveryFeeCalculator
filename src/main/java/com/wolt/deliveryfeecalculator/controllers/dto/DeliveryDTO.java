@@ -6,17 +6,12 @@ import javax.validation.constraints.NotNull;
 
 public class DeliveryDTO {
 
-
-    @NotNull
     private Integer cartValue;
 
-    @NotNull
     private Integer deliveryDistance;
 
-    @NotNull
     private Integer numberOfItems;
 
-    @NotNull
     private String time;
 
     public DeliveryDTO() {
@@ -30,38 +25,29 @@ public class DeliveryDTO {
     }
 
     @JsonProperty("cart_value")
+    @NotNull(message = "Cannot be null")
     public Integer getCartValue() {
         return cartValue;
     }
 
-    public void setCartValue(int cartValue) {
-        this.cartValue = cartValue;
-    }
-
     @JsonProperty("delivery_distance")
+    @NotNull(message = "Cannot be null")
     public Integer getDeliveryDistance() {
         return deliveryDistance;
     }
 
-    public void setDeliveryDistance(int deliveryDistance) {
-        this.deliveryDistance = deliveryDistance;
-    }
 
     @JsonProperty("number_of_items")
+    @NotNull(message = "Cannot be null")
     public Integer getNumberOfItems() {
         return numberOfItems;
     }
 
-    public void setNumberOfItems(int numberOfItems) {
-        this.numberOfItems = numberOfItems;
-    }
 
     @JsonProperty("time")
+    @NotNull(message = "Cannot be null")
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
 }
