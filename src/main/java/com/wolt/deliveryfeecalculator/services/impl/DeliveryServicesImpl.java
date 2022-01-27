@@ -5,7 +5,7 @@ import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesEx
 import com.wolt.deliveryfeecalculator.model.Delivery;
 import com.wolt.deliveryfeecalculator.services.CurrencyConverterServices;
 import com.wolt.deliveryfeecalculator.services.DeliveryServices;
-import com.wolt.deliveryfeecalculator.services.PriceServices;
+import com.wolt.deliveryfeecalculator.services.FeeServices;
 import com.wolt.deliveryfeecalculator.services.TimeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * Delivery Services implemented methods for DeliveryFeeCalculator App
+ *
+ * @author Nicolás Aguilera Contreras
+ */
 @Service
 public class DeliveryServicesImpl implements DeliveryServices {
 
     @Autowired
-    private PriceServices priceServices;
+    private FeeServices feeServices;
 
     @Autowired
     private CurrencyConverterServices currencyConverterServices;
@@ -25,6 +30,13 @@ public class DeliveryServicesImpl implements DeliveryServices {
     @Autowired
     private TimeServices timeServices;
 
+    /**
+     * Gets the fee from a Delivery
+     *
+     * @param delivery delivery for which the fee will be calculated
+     * @return the total delivery fee
+     * @throws DeliveryFeeCalculatorException when something fails
+     */
     @Override
     public int getDeliveryFee(Delivery delivery) throws DeliveryFeeCalculatorException {
         int fees = 0;
@@ -38,13 +50,47 @@ public class DeliveryServicesImpl implements DeliveryServices {
         return fees;
     }
 
+    @Override
+    public double calculateSurchargeByCartPrice(Delivery delivery) throws DeliveryFeeCalculatorException {
+        double cartValue = currencyConverterServices.convertCentsToEuros(delivery.getCartValue());
+        double surcharge = 0;
+        try {
+            surcharge = feeServices.calculateSurchargeByCartPrice(cartValue);
+        } catch (DeliveryFeeCalculatorServicesException e) {
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
+        }
+        return surcharge;
+    }
+
+    @Override
+    public double calculateFeeByDistance(Delivery delivery) throws DeliveryFeeCalculatorException {
+        double fee = 0;
+        try {
+            fee = feeServices.calculateFeeByDistance(delivery.getDeliveryDistance());
+        } catch (DeliveryFeeCalculatorServicesException e) {
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
+        }
+        return fee;
+    }
+
+    @Override
+    public double calculateSurchargeByNumberOfItems(Delivery delivery) throws DeliveryFeeCalculatorException {
+        double surcharge = 0;
+        try {
+            surcharge = feeServices.calculateSurchargeByNumberOfItems(delivery.getNumberOfItems());
+        } catch (DeliveryFeeCalculatorServicesException e) {
+            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
+        }
+        return surcharge;
+    }
+
     private int calculateDeliveryFee(Delivery delivery) throws DeliveryFeeCalculatorException {
         double fees = 0;
         String stringDeliveryTime = delivery.getTime();
         Date deliveryTime = convertStringToDate(stringDeliveryTime);
-        fees += calculateSurchargeByCartPrice(currencyConverterServices.convertCentsToEuros(delivery.getCartValue()));
-        fees += calculateFeeByDistance(delivery.getDeliveryDistance());
-        fees += calculateSurchargeByNumberOfItems(delivery.getNumberOfItems());
+        fees += calculateSurchargeByCartPrice(delivery);
+        fees += calculateFeeByDistance(delivery);
+        fees += calculateSurchargeByNumberOfItems(delivery);
         if (isADateOfTheWeek(6,deliveryTime) && isBetweenTwoHours("15:00:00","19:00:00", delivery.getTime())) {
             fees = fees * 1.1;
         }
@@ -53,36 +99,6 @@ public class DeliveryServicesImpl implements DeliveryServices {
             throw new DeliveryFeeCalculatorException(dFCServicesException.getMessage() , dFCServicesException , dFCServicesException.getStatus());
         }
         return currencyConverterServices.convertEurosToCents(fees);
-    }
-
-    private double calculateSurchargeByCartPrice(double cartValue) throws DeliveryFeeCalculatorException {
-        double surcharge = 0;
-        try {
-            surcharge = priceServices.calculateSurchargeByCartPrice(cartValue);
-        } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
-        }
-        return surcharge;
-    }
-
-    private double calculateFeeByDistance(int deliveryDistance) throws DeliveryFeeCalculatorException {
-        double fee = 0;
-        try {
-            fee = priceServices.calculateFeeByDistance(deliveryDistance);
-        } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
-        }
-        return fee;
-    }
-
-    private double calculateSurchargeByNumberOfItems(int numberOfItems) throws DeliveryFeeCalculatorException {
-        double surcharge = 0;
-        try {
-            surcharge = priceServices.calculateSurchargeByNumberOfItems(numberOfItems);
-        } catch (DeliveryFeeCalculatorServicesException e) {
-            throw new DeliveryFeeCalculatorException(e.getMessage(), e, e.getStatus());
-        }
-        return surcharge;
     }
 
     private Date convertStringToDate(String stringDeliveryTime) throws DeliveryFeeCalculatorException {

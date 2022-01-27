@@ -3,16 +3,16 @@ package com.wolt.deliveryfeecalculator.exceptions;
 import org.springframework.http.HttpStatus;
 
 /**
- * Personalized Exception For Envirify App.
+ * Personalized Exception For DeliveryFeeCalculator App.
  *
- * @author Error 418
+ * @author Nicolás Aguilera Contreras
  */
 public class DeliveryFeeCalculatorException extends Exception {
 
     private final HttpStatus status;
 
     /**
-     * Constructor For EnvirifyException.
+     * Constructor For DeliveryFeeCalculatorException.
      *
      * @param message The Error Message Of The Exception.
      * @param cause   The Cause Of The Error.
@@ -24,7 +24,7 @@ public class DeliveryFeeCalculatorException extends Exception {
     }
 
     /**
-     * Constructor For EnvirifyException.
+     * Constructor For DeliveryFeeCalculatorException.
      *
      * @param message The Error Message Of The Exception.
      * @param status  The HTTP Status Code Of The Error.

@@ -2,7 +2,7 @@ package com.wolt.deliveryfeecalculator.services;
 
 import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesException;
 
-public interface PriceServices {
+public interface FeeServices {
 
     public double calculateSurchargeByCartPrice(double cartValue) throws DeliveryFeeCalculatorServicesException;
 

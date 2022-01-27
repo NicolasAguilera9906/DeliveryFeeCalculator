@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Exception Handler For Envirify App.
+ * Exception Handler For DeliveryFeeCalculator App
  *
- * @author Error 418
+ * @author Nicolás Aguilera Contreras
  */
 @RestControllerAdvice
 public class DeliveryFeeCalculationExceptionHandler {
 
     /**
-     * Method that handles the exceptions of the Envirify Rest Controllers.
+     * Method that handles the exceptions to the DeliveryFeeCalculator Controllers.
      *
      * @param e Exception Caused.
      * @return A Response Entity with teh Error Message.

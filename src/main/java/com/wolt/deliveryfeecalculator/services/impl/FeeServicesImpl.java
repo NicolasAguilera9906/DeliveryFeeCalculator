@@ -2,17 +2,30 @@ package com.wolt.deliveryfeecalculator.services.impl;
 
 import com.wolt.deliveryfeecalculator.exceptions.DeliveryFeeCalculatorServicesException;
 import com.wolt.deliveryfeecalculator.services.CurrencyConverterServices;
-import com.wolt.deliveryfeecalculator.services.PriceServices;
+import com.wolt.deliveryfeecalculator.services.FeeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+/**
+ * Fee services implemented methods for DeliveryFeeCalculator App
+ *
+ * @author Nicolás Aguilera Contreras
+ */
 @Service
-public class PriceServicesImpl implements PriceServices {
+public class FeeServicesImpl implements FeeServices {
 
     @Autowired
     private CurrencyConverterServices currencyConverterServices;
 
+    /**
+     * Calculate the surcharge depending on the value of the cart
+     * If the cart value is less than 10€, a small order surcharge is added to the delivery price
+     *
+     * @param cartValue The value of the cart in euros
+     * @return additional surcharge depending on the value of the cart
+     * @throws DeliveryFeeCalculatorServicesException when the cart value is less than 0
+     */
     @Override
     public double calculateSurchargeByCartPrice(double cartValue) throws DeliveryFeeCalculatorServicesException {
         if(cartValue < 0){
@@ -29,6 +42,14 @@ public class PriceServicesImpl implements PriceServices {
     }
 
 
+    /**
+     * Calculate the surcharge depending on the number of Items
+     * If the number of items is five or more, an additional 50 cent surcharge is added for each item above four
+     *
+     * @param numberOfItems The number of items in the delivery
+     * @return additional surcharge depending on the number of items
+     * @throws DeliveryFeeCalculatorServicesException when the number of items is less than 0
+     */
     @Override
     public double calculateSurchargeByNumberOfItems(int numberOfItems) throws DeliveryFeeCalculatorServicesException {
         if(numberOfItems<0){
@@ -39,6 +60,14 @@ public class PriceServicesImpl implements PriceServices {
         return surcharge;
     }
 
+    /**
+     * Calculate the surcharge depending on the number of Items
+     * If the number of items is five or more, an additional 50 cent surcharge is added for each item above four
+     *
+     * @param numberOfItems The number of items in the delivery
+     * @return additional surcharge depending on the number of items
+     * @throws DeliveryFeeCalculatorServicesException when the number of items is less than 0
+     */
     @Override
     public double calculateFeeByDistance(int distance) throws DeliveryFeeCalculatorServicesException {
         double fee = 0;
