@@ -278,13 +278,12 @@ class DeliveryFeeCalculatorTests {
 
 	@Test
 	void feeShouldNotBeCalculatedWhenAParameterIsNull() throws Exception {
-		String deliveryJSON = getDeliveryWrongJSONWithNullParameters();
 		mockMvc.perform(post("/deliveries/fees/calculate")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(deliveryJSON))
+						.content(getDeliveryWrongJSONWithNullParameters()))
 				.andExpect(status().isBadRequest());
 	}
-	
+
 	private String getDeliveryWrongJSONWithNullParameters() {
 		ArrayList parameters = new ArrayList();
 		parameters.add(1);
