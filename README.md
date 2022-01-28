@@ -8,7 +8,6 @@ Program to calculate the delivery fee. This code is needed when a customer is re
   - [Prerequisites](#Prerequisites)
   - [Execute](#execute)
   - [Use](#use)
-  - [Diagrams](#diagrams)
   - [Tests](#tests)
   - [Author](#author)
   - [License](#license)
