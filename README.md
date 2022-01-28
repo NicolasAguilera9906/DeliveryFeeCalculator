@@ -80,7 +80,7 @@ gradlew test
 
 ![app](resources/img/testResult.JPG)
 
-3. The application's services have a coverage of more than 80%. This report was made with [Jacoco](https://www.eclemma.org/jacoco/)
+3. The application's services have a coverage of more than 90%. This report was made with [Jacoco](https://www.eclemma.org/jacoco/)
 
 ![app](resources/img/jacocoReport.JPG)
 
