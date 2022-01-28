@@ -50,6 +50,13 @@ public class DeliveryServicesImpl implements DeliveryServices {
         return fees;
     }
 
+    /**
+     * Calculate the delivery surcharge due to the cart price
+     *
+     * @param delivery delivery whose surcharge will be calculated
+     * @return the delivery surcharge due to the cart price
+     * @throws DeliveryFeeCalculatorException when something fails
+     */
     @Override
     public double calculateSurchargeByCartPrice(Delivery delivery) throws DeliveryFeeCalculatorException {
         double cartValue = currencyConverterServices.convertCentsToEuros(delivery.getCartValue());
@@ -62,6 +69,13 @@ public class DeliveryServicesImpl implements DeliveryServices {
         return surcharge;
     }
 
+    /**
+     * Calculate the delivery fee according to the distance it has to travel.
+     *
+     * @param delivery delivery for which the fee will be calculated
+     * @return the delivery fee according to the distance it has to travel
+     * @throws DeliveryFeeCalculatorException when something fails
+     */
     @Override
     public double calculateFeeByDistance(Delivery delivery) throws DeliveryFeeCalculatorException {
         double fee = 0;
@@ -73,6 +87,13 @@ public class DeliveryServicesImpl implements DeliveryServices {
         return fee;
     }
 
+    /**
+     * Calculate the delivery surcharge due to the number of items
+     *
+     * @param delivery delivery whose surcharge will be calculated
+     * @return the delivery surcharge due to the number of items
+     * @throws DeliveryFeeCalculatorException when something fails
+     */
     @Override
     public double calculateSurchargeByNumberOfItems(Delivery delivery) throws DeliveryFeeCalculatorException {
         double surcharge = 0;
@@ -113,9 +134,9 @@ public class DeliveryServicesImpl implements DeliveryServices {
         return timeServices.isADateOfTheWeek(numberOfDay,date);
     }
 
-    private boolean isBetweenTwoHours(String hour1, String hour2, String stringDate) throws DeliveryFeeCalculatorException {
+    private boolean isBetweenTwoHours(String time1, String time2, String stringDate) throws DeliveryFeeCalculatorException {
         try {
-            return timeServices.isBetweenTwoHours(hour1,hour2,stringDate);
+            return timeServices.isBetweenTwoTimes(time1,time2,stringDate);
         } catch (DeliveryFeeCalculatorServicesException e) {
             throw new DeliveryFeeCalculatorException(e.getMessage(),e, e.getStatus());
         }
