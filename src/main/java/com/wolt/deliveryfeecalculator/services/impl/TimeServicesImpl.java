@@ -70,7 +70,7 @@ public class TimeServicesImpl implements TimeServices {
      * @param date The date to be compared with the two times
      * @return true if the time of the date is between the time before and the time after
      *         false if the time of the date is not between the time before and the time after
-     * @throws DeliveryFeeCalculatorServicesException
+     * @throws DeliveryFeeCalculatorServicesException when something fails
      */
     @Override
     public boolean isBetweenTwoTimes(String timeBefore, String timeAfter, String date) throws DeliveryFeeCalculatorServicesException {
