@@ -9,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * REST API Controller for Deliveries
@@ -30,10 +34,12 @@ public class DeliveryController {
      * @throws DeliveryFeeCalculatorException when something fails
      */
     @PostMapping("/calculate")
-    public ResponseEntity<Object> getDeliveryPrice (
+    public ResponseEntity<Map<String, Integer>> getDeliveryPrice (
             @Valid @RequestBody DeliveryDTO deliveryDTO) throws DeliveryFeeCalculatorException {
         Delivery delivery = new Delivery(deliveryDTO);
-        int price = deliveryServices.getDeliveryFee(delivery);
-        return new ResponseEntity<>(price, HttpStatus.OK);
+        int fee = deliveryServices.getDeliveryFee(delivery);
+        Map<String, Integer> resp = new HashMap();
+        resp.put("delivery_fee", fee);
+        return new ResponseEntity<Map<String, Integer>>(resp, HttpStatus.OK);
     }
 }

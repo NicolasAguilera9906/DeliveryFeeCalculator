@@ -1,5 +1,7 @@
 package com.wolt.deliveryfeecalculator;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wolt.deliveryfeecalculator.controllers.dto.DeliveryDTO;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -30,6 +33,8 @@ class DeliveryFeeCalculatorTests {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private static final ObjectMapper mapper = new ObjectMapper();
+
 
 	/**
 	 * Validates that the fee is 0 when the cart value is equal to 100 euros
@@ -42,7 +47,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer fee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer fee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedFee = 0;
 		Assert.assertEquals(expectedFee, fee, delta);
@@ -60,7 +68,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer fee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer fee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedFee = 0;
 		Assert.assertEquals(expectedFee, fee, delta);
@@ -78,7 +89,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedFee = 200;
 		Assert.assertEquals(expectedFee, actualFee, delta);
@@ -96,7 +110,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedFee = 700;
 		Assert.assertEquals(expectedFee, actualFee, delta);
@@ -115,7 +132,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedCartSurcharge = 100;
 		double expectedDistanceFee = 200;
@@ -135,7 +155,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedFee = expectedDistanceFee;
@@ -154,7 +177,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedFee = expectedDistanceFee;
@@ -175,7 +201,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedNumberOfItemsSurcharge = (deliveryDTO.getNumberOfItems() - 4) * 50;
@@ -197,7 +226,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedNumberOfItemsSurcharge = (deliveryDTO.getNumberOfItems() - 4) * 50;
@@ -236,7 +268,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedFee = expectedDistanceFee * 1.1;
@@ -255,7 +290,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedFee = expectedDistanceFee * 1.1;
@@ -274,7 +312,10 @@ class DeliveryFeeCalculatorTests {
 						.content(getDeliveryJSON(deliveryDTO)))
 				.andExpect(status().isOk())
 				.andReturn();
-		Integer actualFee = Integer.valueOf(response.getResponse().getContentAsString());
+		String responseString = response.getResponse().getContentAsString();
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {};
+		HashMap<String, Integer> responseMap = mapper.readValue(responseString, typeRef);
+		Integer actualFee = responseMap.get("delivery_fee");
 		double delta = 0.000001d;
 		double expectedDistanceFee = 200;
 		double expectedFee = expectedDistanceFee * 1.1;
