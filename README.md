@@ -52,7 +52,7 @@ gradlew javadoc
 http://localhost:8080/deliveries/fees/calculate
 ```
 
-![app](resources/img/postmanOPEN.JPG) 
+![app](resources/img/postmanOpen.JPG) 
 
 3 Enter the Delivery information in a request payload (JSON) in the body of the request.
 
