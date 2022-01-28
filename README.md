@@ -56,7 +56,11 @@ http://localhost:8080/deliveries/fees/calculate
 
 ![app](resources/img/postmanOpen.JPG) 
 
-3 Enter the Delivery information in a request payload (JSON) in the body of the request.
+3 Enter the Delivery information in a request payload (JSON) in the body of the request. Here is an example : 
+
+```
+{"cart_value": 790, "delivery_distance": 2235, "number_of_items": 4, "time": "2021-10-12T13:00:00Z"}
+```
 
 ![app](resources/img/postmanRequest.JPG) 
 
