@@ -21,6 +21,7 @@ public class FeeServicesImpl implements FeeServices {
     /**
      * Calculate the surcharge depending on the value of the cart
      * If the cart value is less than 10 €, a small order surcharge is added to the delivery price
+     * The surcharge is the difference between the cart value and 10 €
      *
      * @param cartValue The value of the cart in euros
      * @return additional surcharge depending on the value of the cart

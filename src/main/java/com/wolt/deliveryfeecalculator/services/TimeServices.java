@@ -13,7 +13,7 @@ public interface TimeServices {
 
     /**
      * Convert String to Date
-     * The String must be given in the following format : yyyy-MM-dd'T'HH:mm:ss
+     * The String must be given in the following format : yyyy-MM-dd'T'HH:mm:ss'Z'
      *
      * @param stringDate the string to be converted to date
      * @return string converted to date
