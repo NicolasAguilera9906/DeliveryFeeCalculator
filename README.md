@@ -7,7 +7,6 @@
   - [Use](#use)
   - [Diagrams](#diagrams)
   - [Tests](#tests)
-  - [Javadoc generation](#Generation of Javadoc)
   - [Author](#author)
   - [License](#license)
 
@@ -53,15 +52,15 @@ gradlew javadoc
 http://localhost:8080/deliveries/fees/calculate
 ```
 
-![app](resources/img/postmanRequest.png) 
+![app](resources/img/postmanOpen.JPG) 
 
 3 Enter the Delivery information in a request payload (JSON) in the body of the request.
 
-![app](resources/img/postmanJSON.png) 
+![app](resources/img/postmanRequest.JPG) 
 
 4. Send the request and you will get a JSON response with the result of the fee calculation.
 
-![app](resources/img/postmanResult.png)
+![app](resources/img/postmanResult.JPG)
 
 
 
