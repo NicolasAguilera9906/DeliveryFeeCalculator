@@ -62,6 +62,39 @@ http://localhost:8080/deliveries/fees/calculate
 
 ![app](resources/img/postmanResult.JPG)
 
+## Tests
+
+1. To run the unit tests
+
+```
+gradlew test
+```
+
+2. 19 unit tests were performed
+
+![app](resources/img/testResult.JPG)
+
+3. The application's services have a coverage of more than 80%. This report was made with [Jacoco](https://www.eclemma.org/jacoco/)
+
+![app](resources/img/jacocoReport.JPG)
+
+## Built with
+
+* [Gradle](https://gradle.org/) - Dependency Management
+
+## Author
+
+* Nicolás Aguilera Contreras
+
+## License
+
+This project is under GNU General Public License - see the [LICENSE](LICENSE) file for details
+
+
+
+
+
+
 
 
 
