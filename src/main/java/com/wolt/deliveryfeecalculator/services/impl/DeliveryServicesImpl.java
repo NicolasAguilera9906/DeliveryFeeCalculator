@@ -41,11 +41,9 @@ public class DeliveryServicesImpl implements DeliveryServices {
     public int getDeliveryFee(Delivery delivery) throws DeliveryFeeCalculatorException {
         int fees = 0;
         double cartValue = currencyConverterServices.convertCentsToEuros(delivery.getCartValue());
+        fees = calculateDeliveryFee(delivery);
         if(cartValue >= 100){
             fees = 0;
-        }
-        else {
-            fees = calculateDeliveryFee(delivery);
         }
         return fees;
     }

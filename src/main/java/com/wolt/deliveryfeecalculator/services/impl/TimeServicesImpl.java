@@ -29,12 +29,12 @@ public class TimeServicesImpl implements TimeServices {
      */
     @Override
     public Date convertStringToDate(String stringDate) throws DeliveryFeeCalculatorServicesException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date date = null;
         try {
             date = simpleDateFormat.parse( stringDate );
         } catch (ParseException e) {
-            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format", HttpStatus.BAD_REQUEST);
+            throw new DeliveryFeeCalculatorServicesException("Date is in the wrong format. The format must be: yyyy-MM-dd'T'HH:mm:ss'Z'", HttpStatus.BAD_REQUEST);
         }
         return date;
     }

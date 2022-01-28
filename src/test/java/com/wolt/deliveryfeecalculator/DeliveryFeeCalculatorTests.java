@@ -387,7 +387,7 @@ class DeliveryFeeCalculatorTests {
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		String responseMessage = response.getResponse().getContentAsString();
-		String expectedErrorMessage = "Date is in the wrong format";
+		String expectedErrorMessage = "Date is in the wrong format. The format must be: yyyy-MM-dd'T'HH:mm:ss'Z'";
 		Assert.assertEquals(expectedErrorMessage, responseMessage);
 	}
 
