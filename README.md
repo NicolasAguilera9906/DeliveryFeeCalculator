@@ -24,10 +24,12 @@ Program to calculate the delivery fee. This code is needed when a customer is re
 
 ## Execute
 
+In the root of the project run the following commands
+
 1. Build the project
 
 ```
-gradle build
+gradlew build
 ```
 
 2. Runs this project as a Spring Boot application.
@@ -36,7 +38,9 @@ gradle build
 gradlew bootrun
 ```
 
-4. Generating the documentation
+Optional: 
+
+3. Generating the documentation
 
 ```
 gradlew javadoc
