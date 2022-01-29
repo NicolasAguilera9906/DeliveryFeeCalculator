@@ -32,11 +32,17 @@ In the root of the project run the following commands
 gradlew build
 ```
 
-2. Runs this project as a Spring Boot application.
+![app](resources/img/gradleBuild.JPG) 
+
+
+2. Runs this project as a Spring Boot application. After executing this command, you can see how to [use](#use) the application
 
 ```
 gradlew bootrun
 ```
+
+![app](resources/img/gradleRun.JPG) 
+
 
 Optional: 
 
@@ -46,9 +52,12 @@ Optional:
 gradlew javadoc
 ```
 
+![app](resources/img/gradleJavaDoc.JPG) 
+
+
 ## Use
 
-1. [Execute](#Prerequisites) the project
+1. [Execute](#Execute) the project
 
 2. Open postman 
 
