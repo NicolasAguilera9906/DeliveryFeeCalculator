@@ -1,5 +1,5 @@
 # Software Engineering Summer 2022 Internship / Berlin
-## DeliveryFeeCalculator 
+## DeliveryFeeCalculator - BackEnd (Java)
 
 Program to calculate the delivery fee. This code is needed when a customer is ready with their shopping cart and we’d like to show them how much the delivery will cost. The delivery price depends on the cart value, the number of items in the cart, the time of the order, and the delivery distance.
 
