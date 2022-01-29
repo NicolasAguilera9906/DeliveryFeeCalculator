@@ -1,5 +1,5 @@
 # Software Engineering Summer 2022 Internship / Berlin
-## DeliveryFeeCalculator 
+## DeliveryFeeCalculator - BackEnd (Java)
 
 Program to calculate the delivery fee. This code is needed when a customer is ready with their shopping cart and we’d like to show them how much the delivery will cost. The delivery price depends on the cart value, the number of items in the cart, the time of the order, and the delivery distance.
 
@@ -24,27 +24,40 @@ Program to calculate the delivery fee. This code is needed when a customer is re
 
 ## Execute
 
+In the root of the project run the following commands
+
 1. Build the project
 
 ```
-gradle build
+gradlew build
 ```
 
-2. Runs this project as a Spring Boot application.
+![app](resources/img/gradleBuild.JPG) 
+
+
+2. Runs this project as a Spring Boot application. After executing this command, you can see how to [use](#use) the application
 
 ```
 gradlew bootrun
 ```
 
-4. Generating the documentation
+![app](resources/img/gradleRun.JPG) 
+
+
+Optional: 
+
+3. Generating the documentation
 
 ```
 gradlew javadoc
 ```
 
+![app](resources/img/gradleJavaDoc.JPG) 
+
+
 ## Use
 
-1. [Execute](#Prerequisites) the project
+1. [Execute](#Execute) the project
 
 2. Open postman 
 
